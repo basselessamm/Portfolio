@@ -3,253 +3,427 @@
 import { motion } from "framer-motion";
 
 export default function ArchitectureDiagram({ projectIndex }: { projectIndex: number }) {
-  // Render a different diagram based on the project index
-  switch (projectIndex) {
+  switch (projectIndex % 9) {
     case 0:
       return <EcommerceDiagram />;
     case 1:
       return <POSDiagram />;
     case 2:
-      return <GymDiagram />;
+      return <GymSaasDiagram />;
     case 3:
-      return <CMSDiagram />;
+      return <SecurityEngineDiagram />;
     case 4:
-      return <EventDiagram />;
+      return <CMSDiagram />;
+    case 5:
+      return <AthrMobileDiagram />;
+    case 6:
+      return <OncoAppDiagram />;
+    case 7:
+      return <GymWorkoutDiagram />;
+    case 8:
+      return <EventBooksDiagram />;
     default:
-      return <FallbackDiagram />;
+      return <EcommerceDiagram />;
   }
 }
 
 // ---------------------------------------------------------
-// Project 0: Premium E-Commerce (DDD, 4-Level RBAC, Laravel)
+// Diagram 0: Premium E-Commerce (Clean Architecture & DDD)
 // ---------------------------------------------------------
 function EcommerceDiagram() {
   return (
-    <svg viewBox="0 0 400 400" className="w-full h-full font-mono text-[10px]">
-      <defs>
-        <linearGradient id="flow-grad-0" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="var(--accent)" stopOpacity="0" />
-          <stop offset="50%" stopColor="var(--accent)" stopOpacity="1" />
-          <stop offset="100%" stopColor="var(--accent)" stopOpacity="0" />
-        </linearGradient>
-      </defs>
+    <div className="w-full h-full relative flex items-center justify-center p-2">
+      <svg viewBox="0 0 400 400" className="w-full h-full font-mono text-[11px] select-none">
+        <defs>
+          <linearGradient id="grad-emerald" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#10b981" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="#059669" stopOpacity="0.2" />
+          </linearGradient>
+          <linearGradient id="grad-pulse" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#34d399" stopOpacity="0" />
+            <stop offset="50%" stopColor="#34d399" stopOpacity="1" />
+            <stop offset="100%" stopColor="#34d399" stopOpacity="0" />
+          </linearGradient>
+        </defs>
 
-      {/* Nodes */}
-      {/* Client Layer */}
-      <rect x="150" y="40" width="100" height="30" fill="var(--surface-3)" stroke="var(--border)" rx="4" />
-      <text x="200" y="58" fill="var(--text-primary)" textAnchor="middle">Client Requests</text>
+        {/* Outer DDD Domain Boundary */}
+        <rect x="20" y="20" width="360" height="360" fill="none" stroke="#10b981" strokeWidth="1" strokeDasharray="6 6" rx="16" opacity="0.4" />
+        <text x="35" y="42" fill="#10b981" fontSize="10" fontWeight="bold" letterSpacing="1">DOMAIN-DRIVEN DESIGN BOUNDARY</text>
 
-      {/* API Gateway / Auth Layer */}
-      <rect x="130" y="120" width="140" height="40" fill="var(--surface-2)" stroke="var(--accent)" rx="4" strokeWidth="2" />
-      <text x="200" y="140" fill="var(--accent)" textAnchor="middle" fontWeight="bold">API Gateway</text>
-      <text x="200" y="152" fill="var(--text-tertiary)" textAnchor="middle">4-Level RBAC</text>
+        {/* Clean Architecture Rings */}
+        <circle cx="200" cy="210" r="140" fill="none" stroke="#ffffff" opacity="0.06" strokeWidth="1" />
+        <circle cx="200" cy="210" r="95" fill="none" stroke="#10b981" opacity="0.2" strokeWidth="1" />
+        <circle cx="200" cy="210" r="50" fill="url(#grad-emerald)" stroke="#10b981" strokeWidth="2" />
 
-      {/* DDD Domains */}
-      <rect x="40" y="220" width="90" height="40" fill="var(--surface-1)" stroke="var(--border)" rx="4" />
-      <text x="85" y="243" fill="var(--text-secondary)" textAnchor="middle">Catalog Domain</text>
+        {/* Core Domain Center */}
+        <text x="200" y="206" fill="#ffffff" textAnchor="middle" fontWeight="bold" fontSize="12">CORE DOMAIN</text>
+        <text x="200" y="222" fill="#34d399" textAnchor="middle" fontSize="9">Business Logic</text>
 
-      <rect x="155" y="220" width="90" height="40" fill="var(--surface-1)" stroke="var(--border)" rx="4" />
-      <text x="200" y="243" fill="var(--text-secondary)" textAnchor="middle">Order Domain</text>
+        {/* Outer Infrastructure Nodes */}
+        {/* API Gateway */}
+        <g transform="translate(140, 60)">
+          <rect width="120" height="32" fill="#141720" stroke="#10b981" strokeWidth="1.5" rx="6" />
+          <text x="60" y="17" fill="#ffffff" textAnchor="middle" fontWeight="bold" fontSize="10">API Gateway</text>
+          <text x="60" y="27" fill="#10b981" textAnchor="middle" fontSize="8">4-Level RBAC</text>
+        </g>
 
-      <rect x="270" y="220" width="90" height="40" fill="var(--surface-1)" stroke="var(--border)" rx="4" />
-      <text x="315" y="243" fill="var(--text-secondary)" textAnchor="middle">User Domain</text>
+        {/* Catalog Subdomain */}
+        <g transform="translate(35, 190)">
+          <rect width="90" height="36" fill="#141720" stroke="#ffffff" strokeOpacity="0.2" rx="6" />
+          <text x="45" y="18" fill="#ffffff" textAnchor="middle" fontSize="10">Catalog Subdomain</text>
+          <text x="45" y="29" fill="#9ca3af" textAnchor="middle" fontSize="8">Product Bounded Context</text>
+        </g>
 
-      {/* DB Layer */}
-      <rect x="150" y="320" width="100" height="40" fill="var(--surface-3)" stroke="var(--border)" rx="4" />
-      <text x="200" y="343" fill="var(--text-primary)" textAnchor="middle">MySQL Cluster</text>
+        {/* Order Subdomain */}
+        <g transform="translate(275, 190)">
+          <rect width="90" height="36" fill="#141720" stroke="#ffffff" strokeOpacity="0.2" rx="6" />
+          <text x="45" y="18" fill="#ffffff" textAnchor="middle" fontSize="10">Order Subdomain</text>
+          <text x="45" y="29" fill="#9ca3af" textAnchor="middle" fontSize="8">Checkout & Inventory</text>
+        </g>
 
-      {/* Static connections */}
-      <path d="M 200 70 L 200 120" stroke="var(--border)" fill="none" />
-      <path d="M 200 160 L 85 220" stroke="var(--border)" fill="none" />
-      <path d="M 200 160 L 200 220" stroke="var(--border)" fill="none" />
-      <path d="M 200 160 L 315 220" stroke="var(--border)" fill="none" />
-      <path d="M 85 260 L 200 320" stroke="var(--border)" fill="none" />
-      <path d="M 200 260 L 200 320" stroke="var(--border)" fill="none" />
-      <path d="M 315 260 L 200 320" stroke="var(--border)" fill="none" />
+        {/* MySQL Persistence */}
+        <g transform="translate(140, 320)">
+          <rect width="120" height="32" fill="#141720" stroke="#10b981" strokeWidth="1.5" rx="6" />
+          <text x="60" y="17" fill="#ffffff" textAnchor="middle" fontWeight="bold" fontSize="10">MySQL Relational DB</text>
+          <text x="60" y="27" fill="#34d399" textAnchor="middle" fontSize="8">Strict Relational Schema</text>
+        </g>
 
-      {/* Animated Flow Lines */}
-      <motion.line 
-        x1="200" y1="70" x2="200" y2="120" stroke="url(#flow-grad-0)" strokeWidth="2"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-      />
-      <motion.line 
-        x1="200" y1="160" x2="200" y2="220" stroke="url(#flow-grad-0)" strokeWidth="2"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ duration: 1.5, repeat: Infinity, ease: "linear", delay: 0.5 }}
-      />
-    </svg>
+        {/* Connecting Lines & Data Particles */}
+        <line x1="200" y1="92" x2="200" y2="160" stroke="#10b981" strokeOpacity="0.4" strokeWidth="1.5" />
+        <line x1="200" y1="260" x2="200" y2="320" stroke="#10b981" strokeOpacity="0.4" strokeWidth="1.5" />
+        <line x1="125" y1="208" x2="150" y2="208" stroke="#ffffff" strokeOpacity="0.2" />
+        <line x1="250" y1="208" x2="275" y2="208" stroke="#ffffff" strokeOpacity="0.2" />
+
+        {/* Animated Particles */}
+        <motion.circle cx="200" cy="92" r="3" fill="#34d399" animate={{ cy: [92, 160] }} transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }} />
+        <motion.circle cx="200" cy="260" r="3" fill="#34d399" animate={{ cy: [260, 320] }} transition={{ duration: 1.5, repeat: Infinity, ease: "linear", delay: 0.7 }} />
+      </svg>
+    </div>
   );
 }
 
 // ---------------------------------------------------------
-// Project 1: POS & Inventory (High Perf, Relational DB)
+// Diagram 1: POS & Inventory (Native PHP High-Perf Engine)
 // ---------------------------------------------------------
 function POSDiagram() {
   return (
-    <svg viewBox="0 0 400 400" className="w-full h-full font-mono text-[10px]">
-      <defs>
-        <linearGradient id="flow-grad-1" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="var(--accent)" stopOpacity="0" />
-          <stop offset="50%" stopColor="var(--accent)" stopOpacity="1" />
-          <stop offset="100%" stopColor="var(--accent)" stopOpacity="0" />
-        </linearGradient>
-      </defs>
+    <div className="w-full h-full relative flex items-center justify-center p-2">
+      <svg viewBox="0 0 400 400" className="w-full h-full font-mono text-[11px] select-none">
+        {/* Outer Engine Frame */}
+        <rect x="30" y="30" width="340" height="340" fill="#0d1117" stroke="#10b981" strokeWidth="1.5" rx="16" />
+        <text x="45" y="55" fill="#10b981" fontSize="11" fontWeight="bold" letterSpacing="1">HIGH-THROUGHPUT EXECUTION PIPELINE</text>
 
-      {/* Fast Execution Pipeline */}
-      <rect x="50" y="180" width="300" height="40" fill="var(--surface-2)" stroke="var(--accent)" rx="20" strokeWidth="2" />
-      <text x="200" y="203" fill="var(--accent)" textAnchor="middle" fontWeight="bold">Native PHP Execution Pipeline</text>
-
-      {/* Inputs */}
-      <rect x="60" y="80" width="80" height="30" fill="var(--surface-3)" stroke="var(--border)" rx="4" />
-      <text x="100" y="98" fill="var(--text-primary)" textAnchor="middle">POS Terminal</text>
-      
-      <rect x="260" y="80" width="80" height="30" fill="var(--surface-3)" stroke="var(--border)" rx="4" />
-      <text x="300" y="98" fill="var(--text-primary)" textAnchor="middle">Inventory Sync</text>
-
-      {/* DB output */}
-      <rect x="120" y="280" width="160" height="40" fill="var(--surface-1)" stroke="var(--border)" rx="4" />
-      <text x="200" y="303" fill="var(--text-secondary)" textAnchor="middle">Optimized Relational DB</text>
-
-      {/* Connections */}
-      <path d="M 100 110 L 100 180" stroke="var(--border)" fill="none" />
-      <path d="M 300 110 L 300 180" stroke="var(--border)" fill="none" />
-      <path d="M 200 220 L 200 280" stroke="var(--border)" fill="none" />
-
-      {/* Animated Flows */}
-      <motion.line 
-        x1="100" y1="110" x2="100" y2="180" stroke="var(--accent)" strokeWidth="2"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
-      />
-      <motion.line 
-        x1="200" y1="220" x2="200" y2="280" stroke="var(--accent)" strokeWidth="2"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ duration: 0.8, repeat: Infinity, ease: "linear", delay: 0.4 }}
-      />
-    </svg>
-  );
-}
-
-// ---------------------------------------------------------
-// Project 2: Gym Management (Modular, Integrity)
-// ---------------------------------------------------------
-function GymDiagram() {
-  return (
-    <svg viewBox="0 0 400 400" className="w-full h-full font-mono text-[10px]">
-      <circle cx="200" cy="200" r="80" fill="none" stroke="var(--border)" strokeDasharray="4 4" />
-      
-      {/* Central Hub */}
-      <rect x="160" y="160" width="80" height="80" fill="var(--surface-2)" stroke="var(--accent)" rx="40" strokeWidth="2" />
-      <text x="200" y="203" fill="var(--accent)" textAnchor="middle" fontWeight="bold">CORE</text>
-
-      {/* Modules */}
-      <rect x="160" y="40" width="80" height="30" fill="var(--surface-3)" stroke="var(--border)" rx="4" />
-      <text x="200" y="58" fill="var(--text-secondary)" textAnchor="middle">Members</text>
-
-      <rect x="300" y="185" width="80" height="30" fill="var(--surface-3)" stroke="var(--border)" rx="4" />
-      <text x="340" y="203" fill="var(--text-secondary)" textAnchor="middle">Payroll</text>
-
-      <rect x="160" y="330" width="80" height="30" fill="var(--surface-3)" stroke="var(--border)" rx="4" />
-      <text x="200" y="348" fill="var(--text-secondary)" textAnchor="middle">Attendance</text>
-
-      <rect x="20" y="185" width="80" height="30" fill="var(--surface-3)" stroke="var(--border)" rx="4" />
-      <text x="60" y="203" fill="var(--text-secondary)" textAnchor="middle">Subscriptions</text>
-
-      {/* Animated connections syncing to core */}
-      {[
-        { x1: 200, y1: 70, x2: 200, y2: 160 },
-        { x1: 300, y1: 200, x2: 240, y2: 200 },
-        { x1: 200, y1: 330, x2: 200, y2: 240 },
-        { x1: 100, y1: 200, x2: 160, y2: 200 }
-      ].map((line, i) => (
-        <g key={i}>
-          <line x1={line.x1} y1={line.y1} x2={line.x2} y2={line.y2} stroke="var(--border)" />
-          <motion.line
-            x1={line.x1} y1={line.y1} x2={line.x2} y2={line.y2} stroke="var(--accent)" strokeWidth="2"
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={{ pathLength: 1, opacity: [0, 1, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.3 }}
-          />
+        {/* Input Terminals */}
+        <g transform="translate(60, 90)">
+          <rect width="110" height="40" fill="#161b22" stroke="#ffffff" strokeOpacity="0.2" rx="6" />
+          <text x="55" y="20" fill="#ffffff" textAnchor="middle" fontWeight="bold" fontSize="10">Cashier POS Terminal</text>
+          <text x="55" y="32" fill="#9ca3af" textAnchor="middle" fontSize="8">Real-Time Transactions</text>
         </g>
-      ))}
-    </svg>
+
+        <g transform="translate(230, 90)">
+          <rect width="110" height="40" fill="#161b22" stroke="#ffffff" strokeOpacity="0.2" rx="6" />
+          <text x="55" y="20" fill="#ffffff" textAnchor="middle" fontWeight="bold" fontSize="10">Inventory Tracker</text>
+          <text x="55" y="32" fill="#9ca3af" textAnchor="middle" fontSize="8">Stock Audit Sync</text>
+        </g>
+
+        {/* Central Native PHP Processing Core */}
+        <g transform="translate(70, 180)">
+          <rect width="260" height="50" fill="#10b981" fillOpacity="0.15" stroke="#10b981" strokeWidth="2" rx="10" />
+          <text x="130" y="25" fill="#ffffff" textAnchor="middle" fontWeight="bold" fontSize="12">Native PHP High-Speed Engine</text>
+          <text x="130" y="39" fill="#34d399" textAnchor="middle" fontSize="9">Zero Framework Overhead · Instant Execution</text>
+        </g>
+
+        {/* Relational Database Target */}
+        <g transform="translate(110, 285)">
+          <rect width="180" height="45" fill="#161b22" stroke="#10b981" strokeWidth="1.5" rx="8" />
+          <text x="90" y="22" fill="#ffffff" textAnchor="middle" fontWeight="bold" fontSize="11">Optimized Relational Schema</text>
+          <text x="90" y="35" fill="#9ca3af" textAnchor="middle" fontSize="9">Financial Reports & Audit Trail</text>
+        </g>
+
+        {/* Lines */}
+        <line x1="115" y1="130" x2="115" y2="180" stroke="#10b981" strokeWidth="1.5" strokeDasharray="4 4" />
+        <line x1="285" y1="130" x2="285" y2="180" stroke="#10b981" strokeWidth="1.5" strokeDasharray="4 4" />
+        <line x1="200" y1="230" x2="200" y2="285" stroke="#10b981" strokeWidth="2" />
+
+        {/* Fast Particles */}
+        <motion.circle cx="115" cy="130" r="3.5" fill="#34d399" animate={{ cy: [130, 180] }} transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }} />
+        <motion.circle cx="285" cy="130" r="3.5" fill="#34d399" animate={{ cy: [130, 180] }} transition={{ duration: 0.8, repeat: Infinity, ease: "linear", delay: 0.4 }} />
+        <motion.circle cx="200" cy="230" r="4" fill="#34d399" animate={{ cy: [230, 285] }} transition={{ duration: 0.6, repeat: Infinity, ease: "linear" }} />
+      </svg>
+    </div>
   );
 }
 
 // ---------------------------------------------------------
-// Project 3: CMS (Security, Vue Admin)
+// Diagram 2: GYM-SAAS (SaaS Multi-Tenant Architecture)
+// ---------------------------------------------------------
+function GymSaasDiagram() {
+  return (
+    <div className="w-full h-full relative flex items-center justify-center p-2">
+      <svg viewBox="0 0 400 400" className="w-full h-full font-mono text-[11px] select-none">
+        {/* Central Core Circle */}
+        <circle cx="200" cy="200" r="75" fill="#10b981" fillOpacity="0.1" stroke="#10b981" strokeWidth="2" />
+        <circle cx="200" cy="200" r="115" fill="none" stroke="#10b981" strokeOpacity="0.3" strokeDasharray="4 4" />
+
+        <text x="200" y="196" fill="#ffffff" textAnchor="middle" fontWeight="bold" fontSize="13">GYM-SAAS</text>
+        <text x="200" y="212" fill="#34d399" textAnchor="middle" fontSize="9">Laravel Core</text>
+
+        {/* Satellite Modules */}
+        {/* Members */}
+        <g transform="translate(145, 30)">
+          <rect width="110" height="35" fill="#141720" stroke="#ffffff" strokeOpacity="0.2" rx="6" />
+          <text x="55" y="21" fill="#ffffff" textAnchor="middle" fontSize="10">Members Module</text>
+        </g>
+        {/* Subscriptions */}
+        <g transform="translate(270, 182)">
+          <rect width="115" height="35" fill="#141720" stroke="#ffffff" strokeOpacity="0.2" rx="6" />
+          <text x="57" y="21" fill="#ffffff" textAnchor="middle" fontSize="10">Subscriptions Engine</text>
+        </g>
+        {/* Payroll */}
+        <g transform="translate(145, 335)">
+          <rect width="110" height="35" fill="#141720" stroke="#ffffff" strokeOpacity="0.2" rx="6" />
+          <text x="55" y="21" fill="#ffffff" textAnchor="middle" fontSize="10">Automated Payroll</text>
+        </g>
+        {/* Attendance */}
+        <g transform="translate(15, 182)">
+          <rect width="115" height="35" fill="#141720" stroke="#ffffff" strokeOpacity="0.2" rx="6" />
+          <text x="57" y="21" fill="#ffffff" textAnchor="middle" fontSize="10">Attendance Audit</text>
+        </g>
+
+        {/* Connectors */}
+        <line x1="200" y1="65" x2="200" y2="125" stroke="#10b981" strokeOpacity="0.4" strokeWidth="1.5" />
+        <line x1="270" y1="200" x2="275" y2="200" stroke="#10b981" strokeOpacity="0.4" strokeWidth="1.5" />
+        <line x1="200" y1="275" x2="200" y2="335" stroke="#10b981" strokeOpacity="0.4" strokeWidth="1.5" />
+        <line x1="130" y1="200" x2="125" y2="200" stroke="#10b981" strokeOpacity="0.4" strokeWidth="1.5" />
+
+        {/* Pulse Animations */}
+        <motion.circle cx="200" cy="65" r="3" fill="#34d399" animate={{ cy: [65, 125] }} transition={{ duration: 1.5, repeat: Infinity }} />
+        <motion.circle cx="270" cy="200" r="3" fill="#34d399" animate={{ cx: [270, 275] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.4 }} />
+        <motion.circle cx="200" cy="275" r="3" fill="#34d399" animate={{ cy: [275, 335] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.8 }} />
+        <motion.circle cx="130" cy="200" r="3" fill="#34d399" animate={{ cx: [130, 125] }} transition={{ duration: 1.5, repeat: Infinity, delay: 1.2 }} />
+      </svg>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------
+// Diagram 3: PHP Secure Authentication Engine
+// ---------------------------------------------------------
+function SecurityEngineDiagram() {
+  return (
+    <div className="w-full h-full relative flex items-center justify-center p-2">
+      <svg viewBox="0 0 400 400" className="w-full h-full font-mono text-[11px] select-none">
+        {/* Shield Frame */}
+        <path d="M 200 40 L 320 80 L 320 220 C 320 300 200 360 200 360 C 200 360 80 300 80 220 L 80 80 Z" fill="#10b981" fillOpacity="0.08" stroke="#10b981" strokeWidth="2" />
+
+        <text x="200" y="90" fill="#10b981" textAnchor="middle" fontWeight="bold" fontSize="12" letterSpacing="1">SECURE AUTH SHIELD</text>
+
+        {/* 2FA OTP Gateway */}
+        <g transform="translate(130, 115)">
+          <rect width="140" height="36" fill="#141720" stroke="#ffffff" strokeOpacity="0.2" rx="6" />
+          <text x="70" y="18" fill="#ffffff" textAnchor="middle" fontWeight="bold" fontSize="10">2FA OTP Gateway</text>
+          <text x="70" y="29" fill="#34d399" textAnchor="middle" fontSize="8">Rate-Limited Throttling</text>
+        </g>
+
+        {/* Cryptographic Vault */}
+        <g transform="translate(120, 185)">
+          <rect width="160" height="42" fill="#10b981" fillOpacity="0.2" stroke="#10b981" strokeWidth="1.5" rx="8" />
+          <text x="80" y="20" fill="#ffffff" textAnchor="middle" fontWeight="bold" fontSize="11">Salted Hashing Vault</text>
+          <text x="80" y="33" fill="#34d399" textAnchor="middle" fontSize="9">Anti-Hijacking Sessions</text>
+        </g>
+
+        {/* PDO Prepared Statements */}
+        <g transform="translate(130, 260)">
+          <rect width="140" height="36" fill="#141720" stroke="#ffffff" strokeOpacity="0.2" rx="6" />
+          <text x="70" y="18" fill="#ffffff" textAnchor="middle" fontWeight="bold" fontSize="10">Prepared PDO Engine</text>
+          <text x="70" y="29" fill="#9ca3af" textAnchor="middle" fontSize="8">SQL Injection Shield</text>
+        </g>
+
+        {/* Shield Lock Icon */}
+        <motion.circle cx="200" cy="320" r="12" fill="#10b981" animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 2, repeat: Infinity }} />
+      </svg>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------
+// Diagram 4: Custom CMS (Vue.js & PHP Admin)
 // ---------------------------------------------------------
 function CMSDiagram() {
   return (
-    <svg viewBox="0 0 400 400" className="w-full h-full font-mono text-[10px]">
-      {/* Front-end */}
-      <rect x="140" y="60" width="120" height="40" fill="var(--surface-3)" stroke="var(--border)" rx="4" />
-      <text x="200" y="83" fill="var(--text-primary)" textAnchor="middle">Vue.js Admin UI</text>
+    <div className="w-full h-full relative flex items-center justify-center p-2">
+      <svg viewBox="0 0 400 400" className="w-full h-full font-mono text-[11px] select-none">
+        <rect x="40" y="40" width="320" height="320" fill="#0d1117" stroke="#ffffff" strokeOpacity="0.1" rx="12" />
 
-      {/* Security Barrier */}
-      <path d="M 80 150 L 320 150" stroke="var(--accent)" strokeWidth="2" strokeDasharray="8 4" />
-      <text x="200" y="145" fill="var(--accent)" textAnchor="middle">Authentication / Session Barrier</text>
+        {/* Vue.js Frontend */}
+        <g transform="translate(70, 70)">
+          <rect width="260" height="50" fill="#41b883" fillOpacity="0.15" stroke="#41b883" strokeWidth="2" rx="8" />
+          <text x="130" y="25" fill="#ffffff" textAnchor="middle" fontWeight="bold" fontSize="12">Vue.js Reactive Admin SPA</text>
+          <text x="130" y="39" fill="#41b883" textAnchor="middle" fontSize="9">Dynamic UI & State Management</text>
+        </g>
 
-      {/* CMS Core */}
-      <rect x="140" y="200" width="120" height="60" fill="var(--surface-2)" stroke="var(--border)" rx="4" />
-      <text x="200" y="225" fill="var(--text-secondary)" textAnchor="middle">PHP Core</text>
-      <text x="200" y="240" fill="var(--text-tertiary)" textAnchor="middle">Role Validation</text>
+        {/* REST Barrier */}
+        <line x1="60" y1="170" x2="340" y2="170" stroke="#10b981" strokeWidth="2" strokeDasharray="6 4" />
+        <text x="200" y="163" fill="#10b981" textAnchor="middle" fontSize="9">JSON REST API GATEWAY</text>
 
-      {/* DB */}
-      <rect x="140" y="300" width="120" height="40" fill="var(--surface-1)" stroke="var(--border)" rx="4" />
-      <text x="200" y="323" fill="var(--text-secondary)" textAnchor="middle">Content DB</text>
+        {/* PHP CMS Core */}
+        <g transform="translate(100, 200)">
+          <rect width="200" height="45" fill="#141720" stroke="#ffffff" strokeOpacity="0.2" rx="8" />
+          <text x="100" y="22" fill="#ffffff" textAnchor="middle" fontWeight="bold" fontSize="11">PHP CMS Core Engine</text>
+          <text x="100" y="35" fill="#9ca3af" textAnchor="middle" fontSize="9">Role-Based Content Authorization</text>
+        </g>
 
-      {/* Links */}
-      <line x1="200" y1="100" x2="200" y2="200" stroke="var(--border)" />
-      <line x1="200" y1="260" x2="200" y2="300" stroke="var(--border)" />
+        {/* Database */}
+        <g transform="translate(120, 290)">
+          <rect width="160" height="40" fill="#141720" stroke="#10b981" strokeWidth="1.5" rx="6" />
+          <text x="80" y="24" fill="#ffffff" textAnchor="middle" fontWeight="bold" fontSize="10">MySQL Content Store</text>
+        </g>
 
-      {/* Lock icon representing security */}
-      <motion.rect 
-        x="190" y="130" width="20" height="20" fill="var(--background)" stroke="var(--accent)" rx="2"
-        initial={{ scale: 1 }}
-        animate={{ scale: [1, 1.1, 1] }}
-        transition={{ duration: 2, repeat: Infinity }}
-      />
-    </svg>
+        <motion.circle cx="200" cy="120" r="4" fill="#41b883" animate={{ cy: [120, 200] }} transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }} />
+      </svg>
+    </div>
   );
 }
 
 // ---------------------------------------------------------
-// Project 4: Event Planning (Angular, REST)
+// Diagram 5: Athr (أَثَر) - Flutter Islamic Mobile App
 // ---------------------------------------------------------
-function EventDiagram() {
+function AthrMobileDiagram() {
   return (
-    <svg viewBox="0 0 400 400" className="w-full h-full font-mono text-[10px]">
-      <rect x="100" y="80" width="200" height="60" fill="var(--surface-3)" stroke="var(--border)" rx="4" />
-      <text x="200" y="110" fill="var(--text-primary)" textAnchor="middle">Angular SPA (TypeScript)</text>
+    <div className="w-full h-full relative flex items-center justify-center p-2">
+      <svg viewBox="0 0 400 400" className="w-full h-full font-mono text-[11px] select-none">
+        {/* Mobile Frame */}
+        <rect x="110" y="30" width="180" height="340" fill="#0b131e" stroke="#06b6d4" strokeWidth="2" rx="24" />
+        <rect x="165" y="42" width="70" height="12" fill="#06b6d4" fillOpacity="0.3" rx="6" />
 
-      <path d="M 200 140 L 200 240" stroke="var(--border)" strokeWidth="2" strokeDasharray="4 4" />
-      <text x="210" y="190" fill="var(--accent)" textAnchor="start">REST API</text>
+        {/* Athr Geometric Circles */}
+        <circle cx="200" cy="180" r="55" fill="none" stroke="#06b6d4" strokeWidth="2" strokeDasharray="4 4" />
+        <circle cx="200" cy="180" r="35" fill="none" stroke="#38bdf8" strokeWidth="1.5" />
+        <circle cx="200" cy="180" r="16" fill="#06b6d4" fillOpacity="0.3" stroke="#06b6d4" strokeWidth="2" />
 
-      <rect x="100" y="240" width="200" height="60" fill="var(--surface-2)" stroke="var(--accent)" rx="4" />
-      <text x="200" y="270" fill="var(--accent)" textAnchor="middle" fontWeight="bold">Backend Services</text>
-      
-      {/* Bidirectional data flow */}
-      <motion.circle cx="200" cy="140" r="4" fill="var(--accent)" 
-        animate={{ cy: [140, 240, 140] }}
-        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-      />
-    </svg>
+        <text x="200" y="184" fill="#ffffff" textAnchor="middle" fontWeight="bold" fontSize="11">أَثَر</text>
+
+        {/* Flutter Provider Stack */}
+        <g transform="translate(130, 260)">
+          <rect width="140" height="30" fill="#06b6d4" fillOpacity="0.2" stroke="#06b6d4" strokeWidth="1" rx="6" />
+          <text x="70" y="19" fill="#ffffff" textAnchor="middle" fontSize="9">Flutter Provider State</text>
+        </g>
+
+        <g transform="translate(130, 302)">
+          <rect width="140" height="30" fill="#141720" stroke="#ffffff" strokeOpacity="0.2" rx="6" />
+          <text x="70" y="19" fill="#9ca3af" textAnchor="middle" fontSize="9">Offline Hive/SQLite Store</text>
+        </g>
+
+        {/* Ripple Effect Animation */}
+        <motion.circle cx="200" cy="180" r="55" fill="none" stroke="#38bdf8" strokeWidth="2" animate={{ r: [35, 75], opacity: [1, 0] }} transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }} />
+      </svg>
+    </div>
   );
 }
 
 // ---------------------------------------------------------
-// Fallback
+// Diagram 6: OncoApp - Medical Healthcare Mobile App
 // ---------------------------------------------------------
-function FallbackDiagram() {
+function OncoAppDiagram() {
   return (
-    <div className="w-full h-full flex items-center justify-center border border-[var(--border)] bg-[var(--surface-1)]">
-      <span className="text-[10px] font-mono text-[var(--text-tertiary)]">SYS.NO_DIAGRAM</span>
+    <div className="w-full h-full relative flex items-center justify-center p-2">
+      <svg viewBox="0 0 400 400" className="w-full h-full font-mono text-[11px] select-none">
+        {/* Mobile Outer Frame */}
+        <rect x="110" y="30" width="180" height="340" fill="#0c1821" stroke="#06b6d4" strokeWidth="2" rx="24" />
+
+        {/* Heartbeat pulse wave */}
+        <path d="M 130 160 L 160 160 L 175 120 L 195 200 L 210 140 L 225 170 L 270 160" fill="none" stroke="#06b6d4" strokeWidth="2.5" strokeLinecap="round" />
+
+        {/* Patient Dashboard Card */}
+        <g transform="translate(130, 210)">
+          <rect width="140" height="40" fill="#141720" stroke="#ffffff" strokeOpacity="0.2" rx="6" />
+          <text x="70" y="18" fill="#ffffff" textAnchor="middle" fontWeight="bold" fontSize="10">Treatment Tracker</text>
+          <text x="70" y="30" fill="#06b6d4" textAnchor="middle" fontSize="8">Dosage Reminders</text>
+        </g>
+
+        <g transform="translate(130, 265)">
+          <rect width="140" height="40" fill="#06b6d4" fillOpacity="0.2" stroke="#06b6d4" strokeWidth="1" rx="6" />
+          <text x="70" y="18" fill="#ffffff" textAnchor="middle" fontWeight="bold" fontSize="10">Medical REST API</text>
+          <text x="70" y="30" fill="#38bdf8" textAnchor="middle" fontSize="8">Encrypted Patient Reports</text>
+        </g>
+
+        {/* Glowing Pulse Dot */}
+        <motion.circle cx="210" cy="140" r="4" fill="#38bdf8" animate={{ scale: [1, 1.5, 1] }} transition={{ duration: 1, repeat: Infinity }} />
+      </svg>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------
+// Diagram 7: Gym Workout Mobile Companion
+// ---------------------------------------------------------
+function GymWorkoutDiagram() {
+  return (
+    <div className="w-full h-full relative flex items-center justify-center p-2">
+      <svg viewBox="0 0 400 400" className="w-full h-full font-mono text-[11px] select-none">
+        <rect x="110" y="30" width="180" height="340" fill="#0c161c" stroke="#06b6d4" strokeWidth="2" rx="24" />
+
+        <text x="200" y="70" fill="#06b6d4" textAnchor="middle" fontWeight="bold" fontSize="11">WORKOUT TRACKER</text>
+
+        {/* Set Logger Card */}
+        <g transform="translate(130, 95)">
+          <rect width="140" height="45" fill="#141720" stroke="#ffffff" strokeOpacity="0.2" rx="6" />
+          <text x="70" y="20" fill="#ffffff" textAnchor="middle" fontSize="10">Fast Set Logger</text>
+          <text x="70" y="33" fill="#38bdf8" textAnchor="middle" fontSize="8">Touch-Optimized Input</text>
+        </g>
+
+        {/* Local Performance Cache */}
+        <g transform="translate(130, 160)">
+          <rect width="140" height="45" fill="#06b6d4" fillOpacity="0.15" stroke="#06b6d4" strokeWidth="1.5" rx="6" />
+          <text x="70" y="20" fill="#ffffff" textAnchor="middle" fontSize="10">Local Progress Cache</text>
+          <text x="70" y="33" fill="#06b6d4" textAnchor="middle" fontSize="8">Instant Loading</text>
+        </g>
+
+        {/* Dynamic Charts */}
+        <g transform="translate(130, 230)">
+          <rect width="140" height="100" fill="#141720" stroke="#ffffff" strokeOpacity="0.2" rx="8" />
+          <text x="70" y="20" fill="#9ca3af" textAnchor="middle" fontSize="9">Progress Analytics</text>
+          {/* Chart bars */}
+          <rect x="30" y="40" width="12" height="40" fill="#06b6d4" rx="2" />
+          <rect x="50" y="30" width="12" height="50" fill="#38bdf8" rx="2" />
+          <rect x="70" y="50" width="12" height="30" fill="#06b6d4" rx="2" />
+          <rect x="90" y="25" width="12" height="55" fill="#38bdf8" rx="2" />
+        </g>
+      </svg>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------
+// Diagram 8: Event & Books Guide (Angular & REST)
+// ---------------------------------------------------------
+function EventBooksDiagram() {
+  return (
+    <div className="w-full h-full relative flex items-center justify-center p-2">
+      <svg viewBox="0 0 400 400" className="w-full h-full font-mono text-[11px] select-none">
+        <rect x="40" y="40" width="320" height="320" fill="#0f172a" stroke="#ffffff" strokeOpacity="0.1" rx="12" />
+
+        {/* Angular SPA */}
+        <g transform="translate(70, 70)">
+          <rect width="260" height="50" fill="#dd1b16" fillOpacity="0.15" stroke="#dd1b16" strokeWidth="2" rx="8" />
+          <text x="130" y="25" fill="#ffffff" textAnchor="middle" fontWeight="bold" fontSize="12">Angular SPA Frontend</text>
+          <text x="130" y="39" fill="#ef4444" textAnchor="middle" fontSize="9">TypeScript Component Hierarchy</text>
+        </g>
+
+        {/* RxJS Data Flow */}
+        <line x1="200" y1="120" x2="200" y2="210" stroke="#dd1b16" strokeWidth="2" strokeDasharray="4 4" />
+        <text x="210" y="165" fill="#ef4444" fontSize="9">RxJS Event Streams</text>
+
+        {/* REST Backend Services */}
+        <g transform="translate(90, 210)">
+          <rect width="220" height="50" fill="#1e293b" stroke="#ffffff" strokeOpacity="0.2" rx="8" />
+          <text x="110" y="25" fill="#ffffff" textAnchor="middle" fontWeight="bold" fontSize="11">RESTful API Endpoints</text>
+          <text x="110" y="38" fill="#94a3b8" textAnchor="middle" fontSize="9">Book Catalog & Event Sync</text>
+        </g>
+
+        {/* Data Particle */}
+        <motion.circle cx="200" cy="120" r="4" fill="#ef4444" animate={{ cy: [120, 210] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }} />
+      </svg>
     </div>
   );
 }
