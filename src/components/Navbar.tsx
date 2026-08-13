@@ -15,7 +15,7 @@ export default function Navbar() {
       >
         {/* Logo / Name */}
         <a
-          href="#"
+          href="#about"
           className="font-bold text-sm tracking-widest uppercase text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors"
         >
           {IDENTITY.name}
