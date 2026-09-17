@@ -1,29 +1,79 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0a0a0a;
-  --foreground: #e8e6e3;
+  --background: #080a0f;
+  --foreground: #f8fafc;
 
-  /* Warm, distinctive palette — NOT generic cyan-on-black */
-  --accent: #c9a87c;           /* Warm gold / brass */
-  --accent-dim: rgba(201, 168, 124, 0.15);
-  --accent-glow: rgba(201, 168, 124, 0.3);
+  /* Cyber-Emerald & Electric Cyan High-Performance Palette */
+  --accent: #00f5a0;                  /* Electric Emerald (Primary Backend Engine) */
+  --accent-cyan: #00d9f5;             /* Electric Cyan (Data Flow / API nodes) */
+  --accent-indigo: #6366f1;           /* Indigo (Secondary Mobile Track) */
+  --accent-dim: rgba(0, 245, 160, 0.12);
+  --accent-glow: rgba(0, 245, 160, 0.35);
+  --cyan-dim: rgba(0, 217, 245, 0.12);
+  --cyan-glow: rgba(0, 217, 245, 0.3);
 
-  /* Structural grays — warm-tinted, not pure gray */
-  --surface-1: #121110;
-  --surface-2: #1a1918;
-  --surface-3: #242220;
-  --border: rgba(255, 255, 255, 0.06);
-  --border-hover: rgba(255, 255, 255, 0.12);
-  --text-primary: #e8e6e3;
-  --text-secondary: rgba(232, 230, 227, 0.55);
-  --text-tertiary: rgba(232, 230, 227, 0.3);
+  /* Modern Slate Obsidian Surfaces */
+  --surface-1: #0c1017;
+  --surface-2: #121824;
+  --surface-3: #182232;
+  --surface-border: rgba(255, 255, 255, 0.07);
+  --surface-border-hover: rgba(0, 245, 160, 0.25);
+  
+  --border: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(0, 245, 160, 0.3);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-tertiary: #64748b;
+
+  --nav-bg: rgba(11, 16, 24, 0.85);
+  --nav-border: rgba(255, 255, 255, 0.08);
+  --nav-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --glass-bg: linear-gradient(135deg, rgba(15, 20, 28, 0.85) 0%, rgba(12, 16, 23, 0.65) 100%);
+  --grid-color: rgba(255, 255, 255, 0.02);
+  --card-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+}
+
+html.light {
+  /* Genius Luxury Alabaster, Deep Jewel Emerald & Mediterranean Azure */
+  --background: #f8fafc;              /* Fine Titanium Alabaster */
+  --foreground: #090d16;
+
+  --accent: #059669;                  /* High-Contrast Jewel Emerald (WCAG AAA) */
+  --accent-cyan: #0284c7;             /* Deep Ocean Cyan / Azure */
+  --accent-indigo: #4f46e5;           /* Deep Royal Indigo */
+  --accent-dim: rgba(5, 150, 105, 0.08);
+  --accent-glow: rgba(5, 150, 105, 0.2);
+  --cyan-dim: rgba(2, 132, 199, 0.08);
+  --cyan-glow: rgba(2, 132, 199, 0.2);
+
+  /* Light Architectural Paper Surfaces */
+  --surface-1: #ffffff;               /* Crisp Elevated White Card */
+  --surface-2: #f1f5f9;               /* Slate-100 Recessed Tier */
+  --surface-3: #e2e8f0;               /* Slate-200 Active Tier */
+  --surface-border: rgba(15, 23, 42, 0.08);
+  --surface-border-hover: rgba(5, 150, 105, 0.35);
+
+  --border: rgba(15, 23, 42, 0.09);
+  --border-hover: rgba(5, 150, 105, 0.4);
+  --text-primary: #090d16;            /* Deep Obsidian Ink */
+  --text-secondary: #475569;          /* Slate-600 */
+  --text-tertiary: #64748b;           /* Slate-500 */
+
+  --nav-bg: rgba(255, 255, 255, 0.85);
+  --nav-border: rgba(15, 23, 42, 0.08);
+  --nav-shadow: 0 10px 30px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.04);
+  --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.85) 100%);
+  --grid-color: rgba(15, 23, 42, 0.035);
+  --card-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.07), 0 0 1px 1px rgba(15, 23, 42, 0.04);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-accent: var(--accent);
+  --color-accent-cyan: var(--accent-cyan);
+  --color-accent-indigo: var(--accent-indigo);
   --color-accent-dim: var(--accent-dim);
   --color-surface-1: var(--surface-1);
   --color-surface-2: var(--surface-2);
@@ -32,7 +82,11 @@
   --font-mono: var(--font-geist-mono);
 }
 
-/* — Base — */
+/* — Base Styles — */
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 body {
   background-color: var(--background);
   color: var(--foreground);
@@ -40,9 +94,35 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* — Reduced motion: kill all animations — */
+/* — Subtle Ambient Noise / Grid Utility — */
+.bg-grid-pattern {
+  background-image: 
+    linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.bg-radial-gradient {
+  background: radial-gradient(circle at 50% 0%, var(--accent-dim) 0%, transparent 60%);
+}
+
+/* — Spotlight & Glass Card Effects — */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid var(--border);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.glass-panel:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 10px 30px -10px var(--accent-glow);
+}
+
+/* — Reduced motion: kill animations — */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -52,7 +132,7 @@ body {
   }
 }
 
-/* — Focus states for keyboard nav — */
+/* — Focus states for accessibility — */
 *:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
@@ -61,7 +141,7 @@ body {
 /* — Selection — */
 ::selection {
   background: var(--accent);
-  color: var(--background);
+  color: #04080c;
 }
 
 /* — Smooth scroll via Lenis — */
@@ -75,7 +155,7 @@ html.lenis, html.lenis body {
   overflow: hidden;
 }
 
-/* — Custom scrollbar — */
+/* — High-Performance Custom scrollbar — */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -83,8 +163,9 @@ html.lenis, html.lenis body {
   background: var(--background);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--surface-3);
+  background: var(--surface-2);
   border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--accent);

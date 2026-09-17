@@ -2,9 +2,9 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { IDENTITY } from "@/lib/data";
+import { IDENTITY as DEFAULT_IDENTITY, IdentityData } from "@/lib/data";
 
-export default function ContactSection() {
+export default function ContactSection({ identity = DEFAULT_IDENTITY }: { identity?: IdentityData }) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -34,15 +34,15 @@ export default function ContactSection() {
         setStatus("error");
         setErrorMsg(data.error || "Failed to send message.");
       }
-    } catch (err) {
+    } catch {
       setStatus("error");
       setErrorMsg("Network error. Please try again later.");
     }
   };
 
   return (
-    <section id="contact" className="py-24 md:py-32 px-6 border-t border-[var(--border)]">
-      <div className="max-w-5xl mx-auto">
+    <section id="contact" className="py-24 md:py-32 px-6 border-t border-[var(--border)] relative overflow-hidden bg-[var(--background)]">
+      <div className="max-w-5xl mx-auto relative z-10">
         {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -52,75 +52,78 @@ export default function ContactSection() {
           className="mb-16"
         >
           <span className="text-xs font-mono tracking-widest uppercase text-[var(--accent)] block mb-3">
-            Contact
+            Initiate Contact //
           </span>
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight">
-            Let&apos;s Connect
+          <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-[var(--text-primary)]">
+            Let&apos;s Build Resilient Systems
           </h2>
-          <p className="mt-4 text-[var(--text-secondary)] max-w-lg leading-relaxed">
-            Available for full-time positions and collaborative opportunities.
-            Reach out through the form below or via any direct channel.
+          <p className="mt-4 text-[var(--text-secondary)] max-w-lg leading-relaxed text-sm">
+            Available for high-impact full-time engineering roles, backend architecture consulting, and scalable platform initiatives.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Direct channels grid */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4"
+            className="lg:col-span-5 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-1 gap-2.5 sm:gap-3.5"
           >
             <a
-              href={`mailto:${IDENTITY.email}`}
-              className="group p-6 border border-[var(--border)] hover:border-[var(--accent)] transition-colors bg-[var(--surface-hover)]"
+              href={`mailto:${identity.email}`}
+              style={{ touchAction: "manipulation" }}
+              className="group p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-[var(--border)] bg-[var(--surface-1)] hover:border-[var(--accent)]/50 transition-all duration-200 shadow-md active:scale-95"
             >
-              <span className="text-[10px] font-mono tracking-widest uppercase text-[var(--text-tertiary)] block mb-2">
-                Email
+              <span className="text-[9px] sm:text-[10px] font-mono tracking-widest uppercase text-[var(--accent)] block mb-1">
+                Direct Mail
               </span>
-              <span className="text-sm text-[var(--text-secondary)] group-hover:text-[var(--accent)] transition-colors break-all">
-                {IDENTITY.email}
+              <span className="text-xs sm:text-sm font-semibold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors break-all line-clamp-1">
+                {identity.email}
               </span>
             </a>
 
             <a
-              href={IDENTITY.linkedin}
+              href={identity.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="group p-6 border border-[var(--border)] hover:border-[var(--accent)] transition-colors bg-[var(--surface-hover)]"
+              style={{ touchAction: "manipulation" }}
+              className="group p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-[var(--border)] bg-[var(--surface-1)] hover:border-[var(--accent-cyan)]/50 transition-all duration-200 shadow-md active:scale-95"
             >
-              <span className="text-[10px] font-mono tracking-widest uppercase text-[var(--text-tertiary)] block mb-2">
-                LinkedIn
+              <span className="text-[9px] sm:text-[10px] font-mono tracking-widest uppercase text-[var(--accent-cyan)] block mb-1">
+                LinkedIn Profile
               </span>
-              <span className="text-sm text-[var(--text-secondary)] group-hover:text-[var(--accent)] transition-colors">
-                Bassel Essam
+              <span className="text-xs sm:text-sm font-semibold text-[var(--text-primary)] group-hover:text-[var(--accent-cyan)] transition-colors truncate block">
+                {identity.name}
               </span>
             </a>
 
             <a
-              href={IDENTITY.github}
+              href={identity.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="group p-6 border border-[var(--border)] hover:border-[var(--accent)] transition-colors bg-[var(--surface-hover)]"
+              style={{ touchAction: "manipulation" }}
+              className="group p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-[var(--border)] bg-[var(--surface-1)] hover:border-[var(--accent)]/50 transition-all duration-200 shadow-md active:scale-95"
             >
-              <span className="text-[10px] font-mono tracking-widest uppercase text-[var(--text-tertiary)] block mb-2">
-                GitHub
+              <span className="text-[9px] sm:text-[10px] font-mono tracking-widest uppercase text-[var(--text-tertiary)] block mb-1">
+                GitHub Repo
               </span>
-              <span className="text-sm text-[var(--text-secondary)] group-hover:text-[var(--accent)] transition-colors">
-                basselessamm
+              <span className="text-xs sm:text-sm font-semibold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors truncate block">
+                {identity.github ? identity.github.split("/").pop() : "GitHub"}
               </span>
             </a>
 
             <a
-              href={`tel:${IDENTITY.phone.replace(/\s/g, "")}`}
-              className="group p-6 border border-[var(--border)] hover:border-[var(--accent)] transition-colors bg-[var(--surface-hover)]"
+              href={`tel:${identity.phone.replace(/\s/g, "")}`}
+              style={{ touchAction: "manipulation" }}
+              className="group p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-[var(--border)] bg-[var(--surface-1)] hover:border-[var(--accent)]/50 transition-all duration-200 shadow-md active:scale-95"
             >
-              <span className="text-[10px] font-mono tracking-widest uppercase text-[var(--text-tertiary)] block mb-2">
-                Phone
+              <span className="text-[9px] sm:text-[10px] font-mono tracking-widest uppercase text-[var(--accent)] block mb-1">
+                Direct Line
               </span>
-              <span className="text-sm text-[var(--text-secondary)] group-hover:text-[var(--accent)] transition-colors">
-                {IDENTITY.phone}
+              <span className="text-xs sm:text-sm font-semibold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors truncate block">
+                {identity.phone}
               </span>
             </a>
           </motion.div>
@@ -131,19 +134,21 @@ export default function ContactSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="lg:col-span-7 border border-[var(--border)] p-6 md:p-8 bg-[var(--surface)]"
+            className="lg:col-span-7 border border-[var(--border)] p-5 sm:p-8 rounded-2xl bg-[var(--surface-1)] backdrop-blur-xl shadow-2xl"
           >
-            <h3 className="text-xl font-bold mb-6 text-[var(--text-primary)]">
-              Send a Direct Message
+            <h3 className="text-base sm:text-lg font-mono font-bold mb-5 sm:mb-6 text-[var(--text-primary)]">
+              TRANSMIT MESSAGE //
             </h3>
 
             {status === "success" ? (
-              <div className="p-6 border border-emerald-500/30 bg-emerald-500/10 rounded text-emerald-400">
-                <h4 className="font-semibold text-lg mb-2">Message Sent Successfully!</h4>
-                <p className="text-sm">Thank you for reaching out. I will review your message and reply as soon as possible.</p>
+              <div className="p-6 border border-[var(--accent)]/30 bg-[var(--accent)]/10 rounded-xl text-[var(--accent)]">
+                <h4 className="font-bold text-base mb-2">Message Transmitted Successfully!</h4>
+                <p className="text-xs leading-relaxed text-[var(--text-secondary)]">
+                  Thank you for reaching out. Your message has been logged and I will review and reply shortly.
+                </p>
                 <button
                   onClick={() => setStatus("idle")}
-                  className="mt-4 text-xs font-mono uppercase underline hover:text-emerald-300"
+                  className="mt-4 text-xs font-mono uppercase underline text-[var(--accent)] cursor-pointer"
                 >
                   Send another message
                 </button>
@@ -151,73 +156,75 @@ export default function ContactSection() {
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
                 {status === "error" && (
-                  <div className="p-3 border border-red-500/30 bg-red-500/10 rounded text-red-400 text-sm">
+                  <div className="p-3 border border-red-500/30 bg-red-500/10 rounded-xl text-red-400 text-xs font-mono">
                     {errorMsg}
                   </div>
                 )}
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-mono text-[var(--text-tertiary)] uppercase tracking-wider mb-2">
-                      Your Name *
+                    <label className="block text-[10px] font-mono text-[var(--text-tertiary)] uppercase tracking-wider mb-2">
+                      Sender Name *
                     </label>
                     <input
                       type="text"
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder="Jane Doe"
-                      className="w-full bg-[var(--background)] border border-[var(--border)] focus:border-[var(--accent)] text-[var(--text-primary)] p-3 rounded text-sm outline-none transition-colors"
+                      placeholder="e.g. Alex Miller"
+                      className="w-full bg-[var(--surface-2)] border border-[var(--border)] focus:border-[var(--accent)] text-[var(--text-primary)] p-3 rounded-xl text-[16px] sm:text-xs font-mono outline-none transition-colors"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-mono text-[var(--text-tertiary)] uppercase tracking-wider mb-2">
-                      Your Email *
+                    <label className="block text-[10px] font-mono text-[var(--text-tertiary)] uppercase tracking-wider mb-2">
+                      Email Address *
                     </label>
                     <input
                       type="email"
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="jane@example.com"
-                      className="w-full bg-[var(--background)] border border-[var(--border)] focus:border-[var(--accent)] text-[var(--text-primary)] p-3 rounded text-sm outline-none transition-colors"
+                      placeholder="alex@company.com"
+                      className="w-full bg-[var(--surface-2)] border border-[var(--border)] focus:border-[var(--accent)] text-[var(--text-primary)] p-3 rounded-xl text-[16px] sm:text-xs font-mono outline-none transition-colors"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono text-[var(--text-tertiary)] uppercase tracking-wider mb-2">
-                    Subject
+                  <label className="block text-[10px] font-mono text-[var(--text-tertiary)] uppercase tracking-wider mb-2">
+                    Subject //
                   </label>
                   <input
                     type="text"
+                    required
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    placeholder="Project Inquiry / Job Opportunity"
-                    className="w-full bg-[var(--background)] border border-[var(--border)] focus:border-[var(--accent)] text-[var(--text-primary)] p-3 rounded text-sm outline-none transition-colors"
+                    placeholder="Engineering Role / Project Architecture Inquiry"
+                    className="w-full bg-[var(--surface-2)] border border-[var(--border)] focus:border-[var(--accent)] text-[var(--text-primary)] p-3 rounded-xl text-[16px] sm:text-xs font-mono outline-none transition-colors"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono text-[var(--text-tertiary)] uppercase tracking-wider mb-2">
-                    Message *
+                  <label className="block text-[10px] font-mono text-[var(--text-tertiary)] uppercase tracking-wider mb-2">
+                    Message Payload *
                   </label>
                   <textarea
                     required
-                    rows={5}
+                    rows={4}
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    placeholder="Hello Bassel, I'd like to discuss..."
-                    className="w-full bg-[var(--background)] border border-[var(--border)] focus:border-[var(--accent)] text-[var(--text-primary)] p-3 rounded text-sm outline-none transition-colors resize-none"
+                    placeholder="Describe the opportunity, platform requirements, or technical challenges..."
+                    className="w-full bg-[var(--surface-2)] border border-[var(--border)] focus:border-[var(--accent)] text-[var(--text-primary)] p-3 rounded-xl text-[16px] sm:text-xs font-mono outline-none transition-colors resize-none"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={status === "submitting"}
-                  className="w-full sm:w-auto px-8 py-3 bg-[var(--accent)] text-black font-semibold text-sm rounded hover:opacity-90 transition-opacity disabled:opacity-50"
+                  style={{ touchAction: "manipulation" }}
+                  className="w-full py-3.5 px-6 rounded-xl bg-[var(--accent)] text-[#080a0f] font-mono font-bold text-xs uppercase tracking-wider hover:brightness-110 active:scale-95 transition-all duration-200 disabled:opacity-50 cursor-pointer shadow-md"
                 >
-                  {status === "submitting" ? "Sending Message..." : "Send Message"}
+                  {status === "submitting" ? "Transmitting..." : "Send Message →"}
                 </button>
               </form>
             )}

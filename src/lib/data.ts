@@ -45,6 +45,8 @@ export interface Project {
   problem: string;
   solution: string;
   keyDecisions: string[];
+  githubUrl?: string;
+  liveUrl?: string;
 }
 
 export interface Education {
@@ -133,20 +135,32 @@ export const PROJECTS: Project[] = [
   },
   {
     id: "proj-2",
-    title: "POS & Inventory Management System",
-    role: "Back-End Developer",
+    title: "DineSync — Local Restaurant OS (POS, Waiter PWA & KDS)",
+    role: "Systems & Backend Architect",
     category: "core",
-    categoryLabel: "Core Back-End (PHP / Laravel)",
-    stack: ["Native PHP", "MySQL", "Performance Optimization"],
-    problem:
-      "Create a cashier and sales management system that handles real-time daily transactions with minimal resource usage.",
-    solution:
-      "Built a high-performance system in native PHP focused on execution speed and resource optimization, featuring a scalable relational schema for transactions and financial reporting.",
-    keyDecisions: [
-      "Native PHP for maximum execution speed and minimal overhead",
-      "Optimized relational schema for high-throughput transactions",
-      "Resource-efficient query patterns for financial reports",
+    categoryLabel: "Core Back-End (Laravel 12 / Local-First Systems)",
+    stack: [
+      "Laravel 12",
+      "MySQL",
+      "React / Inertia",
+      "Laravel Reverb",
+      "IndexedDB",
+      "Outbox Pattern",
+      "Idempotency Keys",
+      "QZ Tray"
     ],
+    problem:
+      "In high-volume restaurant operations, external internet dependency risks complete shutdown, duplicate payments on unstable Wi-Fi, and lost kitchen tickets. The challenge: architect a 100% LAN-contained restaurant OS with sub-millisecond local latency, guaranteed offline-first resilience, and zero duplicate transactions.",
+    solution:
+      "Architected an enterprise local POS ecosystem on Laravel 12, MySQL, and Inertia.js. Engineered an offline-first Outbox Pattern with client-side IndexedDB and UUID idempotency keys to guarantee zero lost orders, a strict server-enforced Order & Item State Machine with concurrency locking, private Laravel Reverb WebSockets for real-time station ticket routing (Kitchen, Bar, Grill) with automatic state reconciliation on reconnect, decoupled hardware thermal receipt printing via QZ Tray bridge, and an auditable Cashier Shift ledger.",
+    keyDecisions: [
+      "Offline-First Outbox Pattern: Waiter PWA writes orders to client IndexedDB first, dispatching via Outbox queue with idempotent UUIDs to eliminate network drops",
+      "Authoritative Server State Machine: Multi-tier state transitions (Order & Item levels) with DB row locking to eliminate race conditions",
+      "Local Reverb Realtime Engine: LAN WebSocket broadcast routing tickets directly to dedicated kitchen station screens without external internet",
+      "Decoupled Hardware Printing: QZ Tray thermal print failures flag records for instant reprint without aborting or rolling back settled financial transactions",
+      "Comprehensive Financial Audit Log: Shift management with opening/expected/actual cash reconciliation, recording every void, discount, and refund mutation",
+    ],
+    githubUrl: "https://github.com/basselessamm/DineSync",
   },
   {
     id: "proj-3",
@@ -164,6 +178,7 @@ export const PROJECTS: Project[] = [
       "Payroll and attendance tracking with audit trails",
       "Data integrity enforcement at the relational schema level",
     ],
+    githubUrl: "https://github.com/basselessamm/project",
   },
   {
     id: "proj-4",
@@ -199,6 +214,25 @@ export const PROJECTS: Project[] = [
     ],
   },
   {
+    id: "proj-roadbook",
+    title: "RoadBook — 360° Automotive Digital Showroom",
+    role: "Frontend & Interactive UI Developer",
+    category: "secondary",
+    categoryLabel: "Secondary Track (React 19 / Interactive UI)",
+    stack: ["React 19", "Tailwind CSS 4", "Vite", "Canvas 360°", "Sound Design"],
+    problem:
+      "Modern automotive showroom experiences often suffer from sluggish loading, jittery rotational frames, and fragmented technical specifications across disparate pages.",
+    solution:
+      "Engineered an interactive 360° vehicle showroom in React 19 and Tailwind CSS 4 with seamless drag-to-rotate canvas buffering, dynamic telemetry hotspot modals, real-time specifications, and interactive sound design.",
+    keyDecisions: [
+      "Pre-cached 360-degree high-res frame sequence buffer for zero-lag drag rotation",
+      "React 19 compiler optimizations with fluid micro-interactions and touch gestures",
+      "Dynamic telemetry hotspot modals and integrated acoustic sound design",
+    ],
+    githubUrl: "https://github.com/basselessamm/roadbook-showroom-experience",
+    liveUrl: "https://basselessamm.github.io/roadbook-showroom-experience/",
+  },
+  {
     id: "proj-6",
     title: "Athr (أَثَر) - Islamic Productivity App",
     role: "Mobile Developer (Secondary Track)",
@@ -231,6 +265,7 @@ export const PROJECTS: Project[] = [
       "Integration with medical REST API endpoints",
       "Local notification reminders for treatment schedules",
     ],
+    githubUrl: "https://github.com/basselessamm/oncoapp",
   },
   {
     id: "proj-8",
@@ -248,6 +283,7 @@ export const PROJECTS: Project[] = [
       "Fast local caching for instant workout loading",
       "Responsive cross-device layout",
     ],
+    githubUrl: "https://github.com/basselessamm/gym-workout",
   },
   {
     id: "proj-9",
@@ -257,13 +293,13 @@ export const PROJECTS: Project[] = [
     categoryLabel: "Secondary Track (Frontend / Academic)",
     stack: ["Angular", "TypeScript", "HTML/CSS"],
     problem: "Build an interactive web SPA guide for event scheduling and book catalogs.",
-    solution:
-      "Built an Angular frontend application with component modularity and type-safe API integration.",
+    solution: "Built an Angular frontend application with component modularity and type-safe API integration.",
     keyDecisions: [
       "Angular component hierarchy",
       "TypeScript type safety across interfaces",
       "Responsive grid styling",
     ],
+    githubUrl: "https://github.com/basselessamm/books_guide",
   },
 ];
 

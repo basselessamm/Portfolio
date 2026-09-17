@@ -12,6 +12,8 @@ interface Project {
   problem: string;
   solution: string;
   keyDecisions: string[];
+  githubUrl?: string;
+  liveUrl?: string;
 }
 
 export default function AdminProjectsPage() {
@@ -33,6 +35,8 @@ export default function AdminProjectsPage() {
     problem: "",
     solution: "",
     keyDecisions: [],
+    githubUrl: "",
+    liveUrl: "",
   });
   const [stackInput, setStackInput] = useState("");
   const [decisionsInput, setDecisionsInput] = useState("");
@@ -60,6 +64,8 @@ export default function AdminProjectsPage() {
       problem: "",
       solution: "",
       keyDecisions: [],
+      githubUrl: "",
+      liveUrl: "",
     });
     setStackInput("");
     setDecisionsInput("");
@@ -71,6 +77,8 @@ export default function AdminProjectsPage() {
     setFormState({
       ...proj,
       category: proj.category || "core",
+      githubUrl: proj.githubUrl || "",
+      liveUrl: proj.liveUrl || "",
     });
     setStackInput((proj.stack || []).join(", "));
     setDecisionsInput((proj.keyDecisions || []).join("\n"));
@@ -271,8 +279,8 @@ export default function AdminProjectsPage() {
                 </div>
               </div>
 
-              {/* Stack Tags */}
-              <div className="flex flex-wrap gap-1.5">
+              {/* Stack Tags & Link Indicators */}
+              <div className="flex flex-wrap items-center gap-1.5">
                 {(proj.stack || []).map((t, i) => (
                   <span
                     key={i}
@@ -285,6 +293,18 @@ export default function AdminProjectsPage() {
                     {t}
                   </span>
                 ))}
+
+                {proj.githubUrl && (
+                  <span className="px-2 py-0.5 border border-white/20 bg-white/5 text-neutral-300 text-[10px] font-mono rounded flex items-center gap-1">
+                    <span>🐙 GitHub Repo</span>
+                  </span>
+                )}
+
+                {proj.liveUrl && (
+                  <span className="px-2 py-0.5 border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 text-[10px] font-mono rounded flex items-center gap-1">
+                    <span>🌐 Live Demo</span>
+                  </span>
+                )}
               </div>
             </div>
           );
@@ -403,6 +423,34 @@ export default function AdminProjectsPage() {
                   placeholder="Clean mobile UX inspired by concentric ripple geometry&#10;Offline-first local storage persistence"
                   className="w-full bg-black/40 border border-white/10 focus:border-emerald-500 text-white p-3 rounded-lg text-sm outline-none resize-none font-mono text-xs leading-relaxed"
                 />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-mono text-neutral-400 uppercase tracking-wider mb-2">
+                    GitHub Repository URL (Optional)
+                  </label>
+                  <input
+                    type="url"
+                    value={formState.githubUrl || ""}
+                    onChange={(e) => setFormState({ ...formState, githubUrl: e.target.value })}
+                    placeholder="https://github.com/basselessamm/..."
+                    className="w-full bg-black/40 border border-white/10 focus:border-emerald-500 text-white p-3 rounded-lg text-sm outline-none font-mono text-xs"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-mono text-neutral-400 uppercase tracking-wider mb-2">
+                    Live Demo URL (Optional)
+                  </label>
+                  <input
+                    type="url"
+                    value={formState.liveUrl || ""}
+                    onChange={(e) => setFormState({ ...formState, liveUrl: e.target.value })}
+                    placeholder="https://..."
+                    className="w-full bg-black/40 border border-white/10 focus:border-cyan-500 text-white p-3 rounded-lg text-sm outline-none font-mono text-xs"
+                  />
+                </div>
               </div>
 
               <div className="flex justify-end gap-3 pt-4 border-t border-white/10 shrink-0">
